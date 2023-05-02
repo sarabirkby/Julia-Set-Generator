@@ -2,7 +2,7 @@ from controller import *
 import sys
 
 WINDOW_WIDTH = 700
-WINDOW_HEIGHT = 500
+WINDOW_HEIGHT = 700
 
 
 if __name__ == '__main__':

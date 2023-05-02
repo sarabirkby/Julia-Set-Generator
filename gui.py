@@ -1,4 +1,3 @@
-import tkinter.tix
 from tkinter import *
 from util import *
 
@@ -24,8 +23,6 @@ class GUI:
             self.attribute_frame = Frame(self.widget_frame)
             self.attribute_frame.grid(row=1, column=0)
 
-            print(self.attribute_frame.winfo_height())
-
             self.range_frame = Frame(self.widget_frame)
             self.range_frame.grid(row=2, column=0)
 
@@ -48,19 +45,16 @@ class GUI:
             self.title.pack(anchor='n', side='top', pady=10)
 
             # Attribute Frame
-            self.degree_label = Label(self.attribute_frame, text='Polynomial Degree (1): ', font=('Arial', 7))
             self.coefficient_label = Label(self.attribute_frame, text='Polynomial (1): ', font=('Arial', 7))
             self.iteration_label = Label(self.attribute_frame, text='Number of Iterations (2): ', font=('Arial', 7))
             self.threshold_label = Label(self.attribute_frame, text='Threshold Value (3): ', font=('Arial', 7))
 
-            self.degree_entry = Entry(self.attribute_frame, width=5, font=('Arial', 7))
             self.coefficient_entry = Entry(self.attribute_frame, width=10, font=('Arial', 7))
             self.iteration_entry = Entry(self.attribute_frame, width=5, font=('Arial', 7))
             self.threshold_entry = Entry(self.attribute_frame, width=5, font=('Arial', 7))
 
-            pack_row( (self.degree_label, 15), (self.degree_entry, 0), (self.coefficient_label, 15),
-                           (self.coefficient_entry, 0), (self.iteration_label, 15), (self.iteration_entry, 0),
-                           (self.threshold_label, 15), (self.threshold_entry, 0) )
+            pack_row((self.coefficient_label, 15), (self.coefficient_entry, 0), (self.iteration_label, 15),
+                     (self.iteration_entry, 0), (self.threshold_label, 15), (self.threshold_entry, 0))
 
             # Range Frame
             self.min_real_label = Label(self.range_frame, text='Real Min (4): ', font=('Arial', 7))
@@ -92,16 +86,29 @@ class GUI:
             # Failure Frame
             self.failure_label = Label(self.condition_frame, text='Generation Failed! Check inputs.', font=('Arial', 12))
             self.success_label = Label(self.condition_frame, text='Inputs Good, Generating...', font=('Arial', 12))
+            self.done_label = Label(self.condition_frame, text='Generation Complete!', font=('Arial', 12))
+
+            # Display Frame
+            self.display_canvas = Canvas(self.display_frame)
         gen_frames()
         gen_widgets()
 
     def generation_failed(self):
         self.success_label.pack_forget()
+        self.done_label.pack_forget()
         self.failure_label.pack()
 
-    def generation_succeeded(self):
+    def generation_beginning(self):
         self.failure_label.pack_forget()
+        self.done_label.pack_forget()
         self.success_label.pack()
+
+    def display_image(self, img):
+        self.success_label.pack_forget()
+        self.failure_label.pack_forget()
+        self.done_label.pack()
+        self.display_canvas.create_image(0, 0, image=img, anchor='ne')
+
 
     @staticmethod
     def place_grid_row(*widgets, row_num=0):
